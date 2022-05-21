@@ -120,10 +120,13 @@ For five reasons:
 
 ### 4.3 Data cleaning:  
 - [x] Fix or remove outliers (optional).  
-- [ ] Fill in missing values (e.g., with zero, mean, median...) or drop their rows (or columns).
+- [x] Fill in missing values (e.g., with zero, mean, median...) or drop their rows (or columns).
 
 ### 4.4 Feature selection (optional):  
-- [ ] Drop the attributes that provide no useful information for the task.  
+- [ ] Drop the attributes that provide no useful information for the task.
+    ```
+    At first, all data will be used.
+    ```
 
 ### 4.5 Feature engineering, where appropriates:  
 - [ ] Discretize continuous features.  
