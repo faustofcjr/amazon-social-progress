@@ -29,7 +29,7 @@ class LoadDataset:
         return self.YEARS_AVAILABLE
     
     
-    def get_data(self, spi_type = SpiType.INDICATORS):
+    def return_X_y(self, spi_type = SpiType.INDICATORS):
         """
         Feature Selection
 
