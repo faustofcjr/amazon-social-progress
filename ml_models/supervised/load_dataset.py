@@ -15,7 +15,8 @@ class LoadDataset:
     YEARS_AVAILABLE = [2014, 2018, 2021]
     
     def __init__(self):
-        self.dataset = pd.read_csv("../../data/output/hotspot_spi.csv")
+        # TODO: Refactor to get the file from anywhere
+        self.dataset = pd.read_csv("../../../data/output/hotspot_spi.csv")
     
     
     def as_daframe(self):
@@ -43,12 +44,33 @@ class LoadDataset:
             SpiType.INDICATORS: self.__indicators()
         }.get(spi_type)
         
-        y = LabelEncoder().fit_transform(self.dataset["riscofogocat"])
+        y = self.dataset["riscofogocat"]
         
         return (X, y)
     
+    
+    def return_X_y_regr(self, spi_type = SpiType.INDICATORS):
+        """
+        Feature Selection
+        
+        X: Feature Variables (or Independent Variables)
+        
+        y: Target Variables (or dependent Variables)
+        """
+        X = {
+            SpiType.DIMENSIONS: self.__dimensions(),
+            SpiType.COMPONENTS: self.__components(),
+            SpiType.INDICATORS: self.__indicators()
+        }.get(spi_type)
+
+        y = LabelEncoder().fit_transform(self.dataset["indicadorisco"])
+
+        return (X, y)
+    
+    
     def __dimensions(self):
         return self.dataset[["Necessidades Humanas Básicas", "Fundamentos para o Bem-Estar", "Oportunidades"]]
+    
     
     def __components(self):
         return self.dataset[[
@@ -56,6 +78,7 @@ class LoadDataset:
             "Acesso ao conhecimento básico", "Acesso à informação e comunicação", "Saúde e bem-estar", "Qualidade do meio ambiente",
             "Direitos individuais", "Liberdade individual e de escolha", "Tolerância e inclusão", "Acesso à educação superior"
         ]]
+    
     
     def __indicators(self):
         return self.dataset[[ 
