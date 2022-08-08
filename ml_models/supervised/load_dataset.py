@@ -43,7 +43,7 @@ class LoadDataset:
             SpiType.INDICATORS: self.__indicators()
         }.get(spi_type)
         
-        y = self.dataset["indicadoriscocat"]
+        y = self.dataset["indriscocat"]
         
         return (X, y)
     
@@ -61,7 +61,7 @@ class LoadDataset:
             SpiType.INDICATORS: self.__indicators()
         }.get(spi_type)
 
-        y = LabelEncoder().fit_transform(self.dataset["indicadorisco"])
+        y = LabelEncoder().fit_transform(self.dataset["indrisco"])
 
         return (X, y)
     
