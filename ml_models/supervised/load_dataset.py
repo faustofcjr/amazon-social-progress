@@ -30,12 +30,11 @@ class LoadDataset:
         return self.YEARS_AVAILABLE
     
     
-    def return_X_y(self, spi_type = SpiType.INDICATORS):
+    def return_X_y_clf(self, spi_type = SpiType.INDICATORS):
         """
         Feature Selection
 
         X: Feature Variables (or Independent Variables)
-
         y: Target Variables (or dependent Variables)
         """
         X = {
@@ -44,7 +43,7 @@ class LoadDataset:
             SpiType.INDICATORS: self.__indicators()
         }.get(spi_type)
         
-        y = self.dataset["riscofogocat"]
+        y = self.dataset["indicadoriscocat"]
         
         return (X, y)
     
@@ -54,7 +53,6 @@ class LoadDataset:
         Feature Selection
         
         X: Feature Variables (or Independent Variables)
-        
         y: Target Variables (or dependent Variables)
         """
         X = {
