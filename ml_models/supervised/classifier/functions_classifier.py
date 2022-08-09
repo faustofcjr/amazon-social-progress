@@ -51,9 +51,9 @@ def show_model_result(clf, X, y, y_test, y_predict):
     #############################################################################
     print("----------------------------------------------------------------------")
     print("Accuracy: %0.2f" % metrics.accuracy_score(y_test, y_predict))
-    print("Precicion: %0.2f" % metrics.precision_score(y_test, y_predict))
-    print("Sensitivity aka Recall: %0.2f" % metrics.recall_score(y_test, y_predict))
-    print("F1-Score: %0.2f" % metrics.f1_score(y_test, y_predict))
+    print("Precicion: %0.2f" % metrics.precision_score(y_test, y_predict, average="weighted"))
+    print("Sensitivity aka Recall: %0.2f" % metrics.recall_score(y_test, y_predict,average="weighted"))
+    print("F1-Score: %0.2f" % metrics.f1_score(y_test, y_predict, average='weighted'))
 
 
 def show_curve_roc(clf, X_test, y_test, y_predict, label="Curve ROC"):
