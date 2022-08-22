@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from sklearn.preprocessing import label_binarize
+
 from sklearn import (
     metrics, 
     model_selection
@@ -54,31 +56,6 @@ def show_model_result(clf, X, y, y_test, y_predict):
     print("Precicion: %0.2f" % metrics.precision_score(y_test, y_predict, average="weighted"))
     print("Sensitivity aka Recall: %0.2f" % metrics.recall_score(y_test, y_predict,average="weighted"))
     print("F1-Score: %0.2f" % metrics.f1_score(y_test, y_predict, average='weighted'))
-
-
-def show_curve_roc(clf, X_test, y_test, y_predict, label="Curve ROC"):
-    
-    #############################################################################
-    #                         AUC-Area Under the ROC                            #
-    #############################################################################
-    print("----------------------------------------------------------------------")
-    print("AUC-Area Under the ROC Curve: %0.2f" % metrics.roc_auc_score(y_test, y_predict))
-    print("----------------------------------------------------------------------")
-
-    #############################################################################
-    #                                Curve ROC                                  #
-    #############################################################################
-    clf_prob = clf.predict_proba(X_test)
-    probs = clf_prob[:, 1]
-    rfp, rvp, lim = metrics.roc_curve(y_test, probs)
-
-    plt.plot(rfp, rvp, marker=".", label="label", color="green")
-    plt.plot([0,1],[0,1], color="darkblue", linestyle="--")
-
-    plt.xlabel("False Positive Rate")
-    plt.ylabel("True Positive Rate")
-
-    plt.show()
 
 
 def show_best_hyperparameter_optimization(clf, space, X, y, n_splits=10, n_repeats=3, random_state=1, scoring="accuracy", n_jobs=-1):
