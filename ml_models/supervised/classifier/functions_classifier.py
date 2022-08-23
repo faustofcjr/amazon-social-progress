@@ -15,7 +15,8 @@ from sklearn.model_selection import (
 
 from sklearn.model_selection import (
     GridSearchCV,
-    RandomizedSearchCV
+    RandomizedSearchCV,
+    cross_val_score
 )
 
 def show_model_result(clf, X, y, y_test, y_predict):
@@ -110,3 +111,10 @@ def get_error_prediction(X_test, y_test, y_predict):
     X_test_result["Ground Truth"] = y_test
     X_test_result["Prediction"] = y_predict
     return X_test_result[(X_test_result["Ground Truth"] != X_test_result["Prediction"])]
+
+
+
+def get_ensemble_model_accuracy(models, models_names, X, y, cv=5):
+    for clf, label in zip(models, models_names):
+        scores = cross_val_score(clf, X, y, scoring='accuracy', cv=cv)
+        print("Accuracy: %0.2f (+/- %0.2f) [%s]" % (scores.mean(), scores.std(), label))
