@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from sklearn.datasets import make_regression
-from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import cross_val_score, KFold
 from sklearn.inspection import permutation_importance
 
 from sklearn.metrics import (
@@ -13,15 +13,28 @@ from sklearn.metrics import (
 )
 
 
-def evaluate_model(model, X, y, X_train, y_train, X_test, y_test, y_pred, cv=10):
+def evaluate_model(model, X, y, X_train, y_train, X_test, y_test, y_pred, cv=10, n_splits=10):
     print("\nModel-evaluation")
     print("----------------------------------------------------------------------")
     
     score = model.score(X_train, y_train)
     print("Score: {:.4f}".format(score))
-
+    
+    # cross validataion 
+    cv_score = cross_val_score(model, X_train, y_train, cv=cv)
+    print("CV train mean score:{:.4f}".format(cv_score.mean()))
+    
+    # k-fold cross validataion 
+    kfold = KFold(n_splits=n_splits, shuffle=True)
+    kf_cv_scores = cross_val_score(model, X_train, y_train, cv=kfold)
+    print("K-fold CV average score: %.2f" % kf_cv_scores.mean())
+    
+    # prediction
     r_square = r2_score(y_test, y_pred)
     print("R²: {:.4f}".format(r_square))
+    
+    mxerr = max_error(y_test, y_pred)
+    print("Max Error: {:.4f}".format(mxerr))
     
     ev_score = explained_variance_score(y_test, y_pred)
     print("Explained Variance: {:.4f}".format(ev_score))
@@ -32,14 +45,7 @@ def evaluate_model(model, X, y, X_train, y_train, X_test, y_test, y_pred, cv=10)
     rmse = mse * (1/2.0)
     print("RMSE: {:.4f}".format(rmse))
     
-    mxerr = max_error(y_test, y_pred)
-    print("Max Error: {:.4f}".format(mxerr))
-    
-    
-
-    cv_score = cross_val_score(model, X_train, y_train, cv=cv)
-    print("CV train mean score:{:.4f}".format(cv_score.mean()))
-    
+   
     # x_ax = range(len(y_test))
     # plt.plot(x_ax, y_test, label="Original")
     # plt.plot(x_ax, y_pred, label="Predicted")
@@ -48,6 +54,14 @@ def evaluate_model(model, X, y, X_train, y_train, X_test, y_test, y_pred, cv=10)
     # plt.show()
 
 
+def plot_prediction_result(y_test, y_pred):
+    x_ax = range(len(y_test))
+    plt.scatter(x_ax, y_test, s=5, color="blue", label="original")
+    plt.plot(x_ax, y_pred, lw=0.8, color="red", label="predicted")
+    plt.legend()
+    plt.show()
+
+    
 def plot_training_deviance(model, n_estimators, X_test, y_test, y_pred):    
     test_score = np.zeros((n_estimators,), dtype = np.float64)
 
