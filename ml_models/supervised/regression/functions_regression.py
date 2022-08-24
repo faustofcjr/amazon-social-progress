@@ -7,6 +7,7 @@ from sklearn.inspection import permutation_importance
 
 from sklearn.metrics import (
     mean_squared_error, 
+    mean_absolute_error,
     r2_score,
     max_error,
     explained_variance_score   
@@ -44,6 +45,9 @@ def evaluate_model(model, X, y, X_train, y_train, X_test, y_test, y_pred, cv=10,
     
     rmse = mse * (1/2.0)
     print("RMSE: {:.4f}".format(rmse))
+    
+    mase = mean_absolute_error(y_test, y_pred)
+    print("MAE: {:.4f}".format(mase))
     
    
     # x_ax = range(len(y_test))
