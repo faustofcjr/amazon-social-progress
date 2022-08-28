@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 from sklearn.preprocessing import label_binarize
 
@@ -118,3 +119,35 @@ def get_ensemble_model_accuracy(models, models_names, X, y, cv=5):
     for clf, label in zip(models, models_names):
         scores = cross_val_score(clf, X, y, scoring='accuracy', cv=cv)
         print("Accuracy: %0.2f (+/- %0.2f) [%s]" % (scores.mean(), scores.std(), label))
+
+
+def plot_training_deviance(model, n_estimators, X_test, y_test, y_pred):    
+    test_score = np.zeros((n_estimators,), dtype = np.float64)
+
+    for i, y_pred in enumerate(model.staged_predict(X_test)):
+        test_score[i] = model.loss_(y_test, y_pred)
+
+    fig = plt.figure(figsize=(6, 6))
+    plt.subplot(1, 1, 1)
+    
+    plt.title("Train and Test Deviance")
+
+    plt.plot(
+        np.arange(n_estimators) + 1,
+        model.train_score_,
+        "b-",
+        label="Training set deviance",
+    )
+    
+    plt.plot(
+        np.arange(n_estimators) + 1, 
+        test_score, 
+        "r-", 
+        label="Test set deviance"
+    )
+
+    plt.legend(loc="upper right")
+    plt.xlabel("Boosting Iterations")
+    plt.ylabel("Deviance")
+    fig.tight_layout()
+    plt.show()
