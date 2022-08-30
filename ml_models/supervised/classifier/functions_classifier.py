@@ -114,12 +114,22 @@ def get_error_prediction(X_test, y_test, y_predict):
     return X_test_result[(X_test_result["Ground Truth"] != X_test_result["Prediction"])]
 
 
+def display_confusion_matrix(models, y_test, y_predict):
+    plt.rcParams.update({'font.size': 15})
+    cm = metrics.confusion_matrix(y_test, y_predict, labels=models.classes_)
+    disp = metrics.ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=models.classes_)
+    
+    fig, ax = plt.subplots(figsize=(10,10))
+    disp.plot(cmap=plt.cm.Blues,values_format='g', ax=ax)
+    plt.show()
+
 
 def get_ensemble_model_accuracy(models, models_names, X, y, cv=5):
     for clf, label in zip(models, models_names):
         scores = cross_val_score(clf, X, y, scoring='accuracy', cv=cv)
         print("Accuracy: %0.2f (+/- %0.2f) [%s]" % (scores.mean(), scores.std(), label))
 
+        
 
 def plot_training_deviance(model, n_estimators, X_test, y_test, y_pred):    
     test_score = np.zeros((n_estimators,), dtype = np.float64)
@@ -151,3 +161,4 @@ def plot_training_deviance(model, n_estimators, X_test, y_test, y_pred):
     plt.ylabel("Deviance")
     fig.tight_layout()
     plt.show()
+    
