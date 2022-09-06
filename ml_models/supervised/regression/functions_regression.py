@@ -60,6 +60,8 @@ def evaluate_model(model, X, y, X_train, y_train, X_test, y_test, y_pred, cv=10,
 
 def plot_prediction_result(y_test, y_pred):
     x_ax = range(len(y_test))
+    
+    plt.figure(figsize=(12,12))
     plt.scatter(x_ax, y_test, s=5, color="blue", label="original")
     plt.plot(x_ax, y_pred, lw=0.8, color="red", label="predicted")
     plt.legend()
@@ -103,7 +105,7 @@ def plot_feature_importance(model, dataset, X_test, y_test):
     sorted_idx = np.argsort(feature_importance)    
     pos = np.arange(sorted_idx.shape[0]) + 0.5
     
-    fig = plt.figure(figsize=(30, 10))
+    fig = plt.figure(figsize=(30, 40))
     
     plt.subplot(1, 2, 1)
     plt.barh(pos, feature_importance[sorted_idx], align="center")
